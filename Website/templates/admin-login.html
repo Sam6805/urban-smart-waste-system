@@ -17,14 +17,14 @@
                 <h2><i class="fa-solid fa-recycle"></i>Smart Garbage System</h2>
             </div>
             <div class="nav-signin">
-               <button class="button" onclick="window.location.href='/login'">Login</button>
-              <button class="button" onclick="window.location.href='/signup'">Sign Up</button>
+              <button class="button" onclick="window.location.href='admin-login.html'">Login</button>
+              <button class="button" onclick="window.location.href='admin-signup.html'">Sign Up</button>
             </div>
         </div>
       </nav>
     <main>
         <div class="login-form">
-            <form action="/login" method="POST">
+            <form action="admin-dashboard.html" >
                 <h1>Welcome back</h1>
                 <p>Admin Login in to Waste Mangament</p>
                 <div class="form-group">
@@ -48,14 +48,13 @@
                 {% endwith %} -->
                 
 
-                <p>Don't have an account?<a href="/signup"> Sign Up</a></p>
+                <p>Don't have an account?<a href="admin-signup.html"> Sign Up</a></p>
 
                 <h5>Quick accounts</h5>
                 <div class="accounts">
-                    <button type="button" class="account-button"><i class="fa-solid fa-user-shield"></i> Admin</button>
-                    <button type="button" class="account-button"><i class="fa-solid fa-industry"></i> Factory</button>
-                    <button type="button" class="account-button"><i class="fa-solid fa-recycle"></i> Collector</button>
-                    <button type="button" class="account-button"><i class="fa-solid fa-user"></i> User</button>
+                    <button type="button" class="account-button" onclick="window.location.href='admin-login.html'"><i class="fa-solid fa-user-shield"></i> Admin</button>
+                    <button type="button" class="account-button" onclick="window.location.href='collector-login.html'"><i class="fa-solid fa-recycle"></i> Collector</button>
+                    <button type="button" class="account-button" onclick="window.location.href='user-login.html'"><i class="fa-solid fa-user"></i> User</button>
                 </div>
 
             </form>
