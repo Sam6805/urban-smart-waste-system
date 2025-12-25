@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="Wastenet" />
+  <title>Smart Waste Management</title>
+  <link rel="icon" type="image/png" href="../static/images/logo.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+  <link rel="Stylesheet" href="../static/css/style.css">
+  <style>
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fffefe;
+    }
+
+    .split-screen {
+      display: flex;
+      height: 100%;
+    }
+
+    .left-pane {
+      flex: 1;
+      background-color: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      color: #2E7D32;
+      font-size: 2rem;
+      font-weight: bold;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .right-pane {
+      flex: 1;
+      background-color: #F5F6D8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+      border-left: 5px solid #f3d9c1;
+    }
+
+    .signup-container {
+      width: 100%;
+      max-width: 420px;
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .signup-container h2 {
+      color: #1B5E20;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .form-label {
+      color: #0d0e0d;
+    }
+
+    .form-control {
+      border-radius: 8px;
+    }
+
+    .btn-primary {
+      background-color: #0E8A32;
+      border: none;
+      border-radius: 10px;
+    }
+
+    .btn-primary:hover {
+      background-color: #0E8A32;
+    }
+
+    .login-link {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      color: #0E8A32;
+      font-weight: 500;
+    }
+
+    .login-link:hover {
+      text-decoration: underline;
+    }
+    input, textarea, select {
+        width: 100%; padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        margin-top: 5px;
+    }
+    textarea { height: 70px; resize: none; }
+    .error {
+        color: rgb(178, 221, 170);
+        font-size: 13px;
+        margin-top: 3px;}
+  </style>
+</head>
+
+<body>
+  
+     <nav>
+        <div class="nav-bar">
+            <div class="logo">
+                <h2><i class="fa-solid fa-recycle"></i>Smart Garbage System</h2>
+            </div>
+            <div class="nav-signin">
+               <button class="button" onclick="window.location.href='collector-login.html'">Login</button>
+              <button class="button" onclick="window.location.href='collector-signup.html'">Sign Up</button>
+            </div>
+
+        </div>
+    </nav>
+    <div class="right-pane">
+      <div class="signup-container">
+        <h2>Create Your Account</h2>
+        <form action="/register" method="post">
+
+        <label>Name</label>
+        <div class="error" id="nameError"></div>
+        <input type="text" id="name" name="name" placeholder="Enter your name"
+       required minlength="3" 
+       pattern="[A-Za-z ]+"
+       title="Name must be at least 3 letters and contain only alphabets.">
+
+        <label>Phone Number</label>
+        <input type="text" id="phone" name="phone" placeholder="+91-8734567890"
+       required minlength="10" maxlength="10"
+       pattern="[0-9]{10}"
+       title="Enter a valid 10-digit phone number.">
+
+        <label>Vehicle Number</label>
+        <input type="text" id="vehicle_no" name="vehicle_no"
+       required minlength="10" maxlength="10"
+       pattern="[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}"
+       title="Format must be MH12AB1234.">
+
+        <label>Address</label>
+        <input type="text" id="address" name="address"
+       required minlength="5"
+       title="Enter a proper address (minimum 5 characters).">
+
+
+        <label>Email</label>
+        <input type="email" id="email" name="email" placeholder="abcd123@gmail.com"
+       required
+       pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+       title="Enter a valid email address.">
+     
+
+        <label>Select Area</label>
+        
+        <select id="area" name="area" required title="Please select an area.">
+         <option value="">Select Area</option>
+         <option value="Shree nagar">Shree Nagar </option>
+         <option value="Bhagya nagar">Bhagya Nagar</option>
+          <option value="Shivaji Nagar">Shivaji Nagar</option>
+        </select>
+        
+
+        <label>Password</label>
+        <input type="password" id="password" name="password"
+       required minlength="6"
+       title="Password must be at least 6 characters.in which one capital letter and special character and some numbers ">
+
+
+        <label class="form-label">Confirm Password</label>
+        <input type="password" id="confirm_password" class="form-control" name="confirm_password"
+       required minlength="6" style="margin-bottom:15px;"
+       title="Confirm password must match the password.">
+
+        
+       <button class="btn btn-primary w-100" type="submit" >Register</button>
+        
+        
+    </form>
+
+        <a href="collector-login.html" class="login-link">
+          Already have an account? Log in
+        </a>
+      </div>
+    </div>
+
+  <script>
+    const form = document.querySelector("form");
+    form.addEventListener("submit", function (e) {
+      const password = document.getElementById("password").value;
+      const confirm = document.getElementById("confirmPassword").value;
+      if (password !== confirm) {
+        alert("Passwords do not match!");
+        e.preventDefault();
+      }
+    });
+  </script>
+</body>
+
+</html>

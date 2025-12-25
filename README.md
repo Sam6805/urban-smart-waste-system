@@ -1,4 +1,2 @@
-# smartgarbage-demo
-This is my first git Repository
-Author - Shrija
-Author - Manasvi
+Urban Smart Waste System – Flask Application
+
