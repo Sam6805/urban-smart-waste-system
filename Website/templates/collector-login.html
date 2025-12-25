@@ -275,14 +275,14 @@ input:focus {
                 <h2><i class="fa-solid fa-recycle"></i>Smart Garbage System</h2>
             </div>
             <div class="nav-signin">
-               <button class="button" onclick="window.location.href='collector-login.html'">Login</button>
-              <button class="button" onclick="window.location.href='collector-signup.html'">Sign Up</button>
+               <button class="button" onclick="window.location.href='/collector_login'">Login</button>
+              <button class="button" onclick="window.location.href='/collector_signup'">Sign Up</button>
             </div>
         </div>
       </nav>
     <main>
         <div class="login-form">
-            <form action="collector-homescreen.html">
+            <form action="/collector_login" method="POST">
                 <h1>Welcome back</h1>
                 <p>Collector Login in to Waste Mangament</p>
                 <form action="collector-homescreen.html" method="post" class="login-form">
@@ -297,13 +297,13 @@ input:focus {
                     <button type="submit" class="login-button" onclick="window.location.href='\index'">Login</button>
 
                 </form>
-                <p>Don't have an account?<a href="collector-signup.html" > Sign Up</a></p>
+                <p>Don't have an account?<a href="{{ url_for('auth.collector_signup') }}" > Sign Up</a></p>
 
                 <h5>Quick accounts</h5>
                 <div class="accounts">
-                    <button type="button" class="account-button" onclick="window.location.href='admin-login.html'"><i class="fa-solid fa-user-shield"></i> Admin</button>
-                    <button type="button" class="account-button" onclick="window.location.href='collector-login.html'"><i class="fa-solid fa-recycle"></i> Collector</button>
-                    <button type="button" class="account-button" onclick="window.location.href='user-login.html'"><i class="fa-solid fa-user"></i> User</button>
+                    <button type="button" class="account-button" onclick="window.location.href='/login'"><i class="fa-solid fa-user-shield"></i> Admin</button>
+                    <button type="button" class="account-button" onclick="window.location.href='/collector_login'"><i class="fa-solid fa-recycle"></i> Collector</button>
+                    <button type="button" class="account-button" onclick="window.location.href='/user_login'"><i class="fa-solid fa-user"></i> User</button>
                 </div>
 
             </form>

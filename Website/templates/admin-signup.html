@@ -104,8 +104,8 @@
                 <h2><i class="fa-solid fa-recycle"></i>Smart Garbage System</h2>
             </div>
             <div class="nav-signin">
-               <button class="button" onclick="window.location.href='admin-login.html'">Login</button>
-              <button class="button" onclick="window.location.href='admin-signup.html'">Sign Up</button>
+               <button class="button" onclick="window.location.href='/login'">Login</button>
+              <button class="button" onclick="window.location.href='/admin_signup'">Sign Up</button>
             </div>
 
         </div>
@@ -113,7 +113,7 @@
     <div class="right-pane">
       <div class="signup-container">
         <h2>Create Your Account</h2>
-        <form method="POST" action="/signup" >
+        <form action="/admin_signup" method="POST"  >
           <div class="mb-3">
             <label>Full Name:</label>
               <input type="text" id="fullName" name="fullName" required oninput="this.value=this.value.replace(/[^A-Za-z ]/g,''); 
@@ -144,7 +144,7 @@
             <label>Password:</label>
             <input type="password" id="password" name="password" required oninput="
             const pattern1 = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-            this.setCustomValidity(pattern.test(this.value) 
+            this.setCustomValidity(pattern1.test(this.value) 
                                   ? '' 
                                   : 'Password must be 8+ chars, include upper, lower, number & special char');
        ">
@@ -160,9 +160,20 @@
           </div>
 
           <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+          
+          {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" 
+                                 style="color:#e93e4f;font-size:18px;text-align:center;margin-top:10px;">
+                                {{ message }}
+                            </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
         </form>
 
-        <a href="user-login.html" class="login-link">
+        <a href="{{ url_for('auth.login') }}" class="login-link">
           Already have an account? Log in
         </a>
       </div>
@@ -178,6 +189,17 @@
         e.preventDefault();
       }
     });
+    
+    document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                setTimeout(function() {
+                    setTimeout(function() {
+                        alert.remove();
+                    }, 500);
+                }, 2000);
+            });
+        });
   </script>
 </body>
 

@@ -104,8 +104,8 @@
                 <h2><i class="fa-solid fa-recycle"></i>Smart Garbage System</h2>
             </div>
             <div class="nav-signin">
-               <button class="button" onclick="window.location.href='admin-login.html'">Login</button>
-              <button class="button" onclick="window.location.href='admin-signup.html'">Sign Up</button>
+               <button class="button" onclick="window.location.href='/user_login'">Login</button>
+              <button class="button" onclick="window.location.href='/user_signup'">Sign Up</button>
             </div>
 
         </div>
@@ -113,7 +113,7 @@
     <div class="right-pane">
       <div class="signup-container">
         <h2>Create Your Account</h2>
-        <form method="POST" action="/signup" >
+        <form action="/user_signup"  method="POST" >
           <div class="mb-3">
             <label>Full Name:</label>
               <input type="text" id="fullName" name="fullName" required oninput="this.value=this.value.replace(/[^A-Za-z ]/g,''); 
@@ -168,7 +168,7 @@
           <button type="submit" class="btn btn-primary w-100">Sign Up</button>
         </form>
 
-        <a href="admin-login.html" class="login-link">
+        <a href="{{ url_for('auth.user_login')}}" class="login-link">
           Already have an account? Log in
         </a>
       </div>
