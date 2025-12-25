@@ -1,0 +1,217 @@
+from flask import Flask, request, render_template, redirect, url_for, session # type: ignore
+import mysql.connector # type: ignore
+
+app = Flask(__name__)
+app.secret_key = "secret123"
+
+def get_db_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="Jadhav@1234",
+        database="collector"
+    )
+
+def init_db():
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(100),
+            phone VARCHAR(15),
+            vehicle_no VARCHAR(20),
+            address TEXT,
+            email VARCHAR(100) UNIQUE,
+            area VARCHAR(50),
+            password VARCHAR(255)
+        );
+    """)
+
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS tasks (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT,
+            description TEXT,
+            location VARCHAR(255),
+            status ENUM('pending','accepted','completed') DEFAULT 'pending',
+            collector_id INT DEFAULT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """)
+
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+init_db()
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+
+        conn = get_db_connection()
+        cur = conn.cursor(dictionary=True)
+
+        cur.execute("SELECT * FROM users WHERE email=%s AND password=%s", (email,password))
+        user = cur.fetchone()
+
+        cur.close()
+        conn.close()
+
+        if user :
+            session['user_id'] = user['id']
+            session['name'] = user['name']
+            return redirect(url_for('index'))
+
+        return render_template("login.html", error="Invalid email or password")
+
+    return render_template("login.html")
+
+@app.route('/register', methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        name = request.form["name"]
+        phone = request.form["phone"]
+        vehicle_no = request.form["vehicle_no"]
+        address = request.form["address"]
+        email = request.form["email"]
+        area = request.form["area"]
+        password = request.form["password"]
+        confirm_password = request.form["confirm_password"]
+
+        if password != confirm_password:
+            return render_template("register.html", error="Passwords do not match")
+
+        conn = get_db_connection()
+        cur = conn.cursor(dictionary=True)
+
+        cur.execute("SELECT * FROM users WHERE email=%s", (email,))
+        existing = cur.fetchone()
+
+        if existing:
+            cur.close()
+            conn.close()
+            return render_template("register.html", error="User already exists")
+
+        cur.execute(
+            "INSERT INTO users(name, phone, vehicle_no, address, email, area, password) VALUES (%s,%s,%s,%s,%s,%s,%s)",
+            (name, phone, vehicle_no, address, email, area, password)
+        )
+
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        session["username"] = name
+        return redirect(url_for("index"))
+
+    return render_template('register.html')
+
+@app.route("/tasks")
+def tasks():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    conn = get_db_connection()
+    cur = conn.cursor(dictionary=True)
+
+    cur.execute("""
+        SELECT * FROM tasks
+        WHERE status = 'pending'
+          AND collector_id IS NULL
+    """)
+    tasks = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    return render_template("tasks.html", tasks=tasks)
+
+@app.route("/accept_task/<int:task_id>", methods=["POST"])
+def accept_task(task_id):
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    collector_id = session["user_id"]
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        UPDATE tasks
+        SET status = 'accepted',
+            collector_id = %s
+        WHERE id = %s
+          AND status = 'pending'
+          AND collector_id IS NULL
+    """, (collector_id, task_id))
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return redirect(url_for("index"))
+
+@app.route("/complete_task/<int:task_id>")
+def complete_task(task_id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        UPDATE tasks
+        SET status='completed'
+        WHERE id=%s
+    """, (task_id,))
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return redirect(url_for("tasks"))
+
+@app.route("/index")
+def index():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    collector_id = session["user_id"]
+
+    conn = get_db_connection()
+    cur = conn.cursor(dictionary=True)
+
+    cur.execute("""
+        SELECT * FROM tasks
+        WHERE collector_id = %s
+          AND status IN ('accepted','pending')
+    """, (collector_id,))
+
+    tasks = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    return render_template(
+        "index.html",
+        username=session["name"],
+        tasks=tasks
+    )
+
+
+
+@app.route("/logout")
+def logout():
+    session.pop("username", None)
+    return redirect(url_for("home"))
+
+
+@app.route("/")
+def home():
+    return redirect(url_for("login"))
+
+if __name__ == "__main__":
+    app.run(debug=True)
