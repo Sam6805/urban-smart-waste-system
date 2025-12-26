@@ -110,37 +110,46 @@
 <body>
 
     <!-- Header -->
-    <div class="header">My Reports</div>
+   <div class="header">
+    My Reports
+    <form action="{{ url_for('logout') }}" method="get" style="float:right; margin:0;">
+        <button type="submit" style="color:white; background:transparent; border:none; font-weight:bold;">
+            Logout
+        </button>
+    </form>
+</div>
 
     <div class="container">
 
-        <!-- Report Card -->
-        <div class="report-card">
-            <img src="https://thumbs.dreamstime.com/b/pile-garbage-plastic-black-trash-bag-waste-many-footpath-pollution-trash-plastic-waste-bag-foam-tray-garbage-119376415.jpg" alt="Garbage Image">
+{% for report in reports %}
+<div class="report-card">
 
-            <div class="report-content">
+    {% if report.image %}
+    <img src="{{ url_for('static', filename='uploads/' ~ report.image) }}">
+    {% endif %}
 
-                <span class="status">COLLECTED</span>
-                <span class="date">11/20/2025</span>
+    <div class="report-content">
+        <span class="status">{{ report.status }}</span>
+        <span class="date">{{ report.created_at.strftime('%d/%m/%Y') }}</span>
 
-                <div class="location">
-                    📍 37.421998, -122.084000
-                </div>
-
-                <div class="collector">
-                    🚛 Collector: Vaibhav
-                </div>
-
-            </div>
+        <div class="location">
+            📍 {{ report.latitude }}, {{ report.longitude }}
         </div>
 
+        <div class="collector">
+            🚛 Collector: Assigned
+        </div>
     </div>
 
+</div>
+{% endfor %}
 
-<div class="bottom-nav">
-     <a href="user-reportpage.html">📍 Report Garbage</a>
-    <a href="user-reportstat.html" >📄 My Reports</a>
-    <a href="user-profile.html">👤 Profile</a>
+</div>
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+    <a href="{{ url_for('report_garbage') }}">📍 Report Garbage</a>
+    <a href="{{ url_for('my_reports') }}" class="active">📄 My Reports</a>
+    <a href="{{ url_for('profile') }}">👤 Profile</a>
 </div>
 
 
