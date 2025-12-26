@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session, redirect, url_for
+from flask import Blueprint, render_template, session, redirect, url_for , request
 from .models import get_db_connection
 
 admin_view = Blueprint('admin_view', __name__)
@@ -49,51 +49,57 @@ def report():
 def dashboard():
     if 'admin_id' not in session:
         return redirect(url_for('auth.login'))
-    
+
+    area = request.args.get('area', 'all')   
+    status = request.args.get('rstatus')
     conn = get_db_connection()
     cur = conn.cursor(dictionary=True)
-    
+
     try:
         cur.execute("SELECT * FROM users")
         users = cur.fetchall()
-        
-        cur.execute("SELECT * FROM collector")
+
+        if area != 'all':
+            cur.execute("SELECT * FROM collector WHERE area = %s", (area,))
+        else:
+            cur.execute("SELECT * FROM collector")
         collector = cur.fetchall()
 
-        cur.execute("SELECT * FROM report")
+        if status:
+            cur.execute("SELECT * FROM report WHERE status = %s", (status,))
+        else:
+            cur.execute("SELECT * FROM report")
         report = cur.fetchall()
 
-        cur.execute("SELECT COUNT(*) AS total_report FROM report")
-        Total_report = cur.fetchone()
+        cur.execute("SELECT DISTINCT area FROM collector")
+        areas = cur.fetchall()
 
-        total_report = Total_report["total_report"]
+        cur.execute("SELECT COUNT(*) AS total_report FROM report")
+        total_report = cur.fetchone()["total_report"]
 
         cur.execute("SELECT COUNT(*) AS active_count FROM collector WHERE isActive = 1")
-        ActiveColl = cur.fetchone()
+        active_coll = cur.fetchone()["active_count"]
 
-        active_coll = ActiveColl['active_count']
+        cur.execute("SELECT COUNT(*) AS pending_report FROM report WHERE status='pending'")
+        pending_rep = cur.fetchone()["pending_report"]
 
-        cur.execute("SELECT COUNT(*) AS pending_report FROM report WHERE status = 'pending'")
-        Pending_rep = cur.fetchone()
+        cur.execute("SELECT COUNT(*) AS collected_report FROM report WHERE status='collected'")
+        collected_rep = cur.fetchone()["collected_report"]
 
-        pending_rep = Pending_rep['pending_report']
-
-        cur.execute("SELECT COUNT(*) AS collected_report FROM report WHERE status = 'collected'")
-        Collected_rep = cur.fetchone()
-
-        collected_rep = Collected_rep['collected_report']
-
-    except Exception as e:
-        print(f"Error fetching data: {e}")
-        users = []
-        collector = []
-        total_report = 0
-        active_coll = 0
-        pending_rep = 0
-        collected_rep = 0
     finally:
         cur.close()
         conn.close()
-    
-    return render_template('admin-dashboard.html', users=users, collector=collector, report=report, active_coll=active_coll, pending_rep=pending_rep, collected_rep=collected_rep, total_report=total_report)
 
+    return render_template(
+        'admin-dashboard.html',
+        users=users,
+        collector=collector,
+        report=report,
+        rstatus=status,
+        areas=areas,                
+        selected_area=area,          
+        active_coll=active_coll,
+        pending_rep=pending_rep,
+        collected_rep=collected_rep,
+        total_report=total_report
+    )

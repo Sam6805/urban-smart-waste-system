@@ -385,26 +385,6 @@ body {
     flex-shrink: 0;
 }
 
-/* .stat-icon.blue {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-}
-
-.stat-icon.orange {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    color: white;
-}
-
-.stat-icon.green {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    color: white;
-}
-
-.stat-icon.purple {
-    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-    color: white;
-} */
-
 .stat-info h3 {
     font-size: 32px;
     font-weight: 700;
@@ -432,34 +412,51 @@ body {
     font-weight: 600;
 }
 
-/* Area Tabs */
-.area-tabs {
+/* Area Dropdown Container */
+.area-dropdown {
+    margin: 15px 0 25px;
     display: flex;
-    gap: 10px;
-    margin-bottom: 25px;
-    border-bottom: 2px solid var(--border-color);
-    flex-wrap: wrap;
+    justify-content: flex-start;   /* right aligned */
 }
 
-.area-tab {
-    padding: 12px 24px;
-    background: transparent;
-    border: none;
-    border-bottom: 3px solid transparent;
-    color: var(--text-gray);
-    font-weight: 500;
+/* Select Box */
+.area-dropdown select {
+    width: 220px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+
+    border-radius: 8px;
+    border: 1px solid #d6e5d8;
+    background-color: #ffffff;
+
+    color: #1b5e20;
     cursor: pointer;
-    transition: all 0.3s ease;
+
+    /* Remove default arrow */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    /* Custom arrow */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='%231b5e20' d='M5.5 7l4.5 5 4.5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 14px;
 }
 
-.area-tab.active {
-    color: var(--primary-green);
-    border-bottom-color: var(--primary-green);
+/* Hover */
+.area-dropdown select:hover {
+    border-color: #2e7d32;
 }
 
-.area-tab:hover {
-    color: var(--primary-green);
+/* Focus */
+.area-dropdown select:focus {
+    outline: none;
+    border-color: #2e7d32;
+    box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.15);
 }
+
 
 /* Collectors Grid */
 .collectors-grid {

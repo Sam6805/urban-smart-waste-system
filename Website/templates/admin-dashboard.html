@@ -75,15 +75,23 @@
         <div class="section-header">
             <h2><i class="fas fa-user-tie"></i> Collectors by Area</h2>
         </div>
-        <div class="area-tabs">
-            <button class="area-tab active" data-area="all">All Areas</button>
-            <button class="area-tab" data-area="shrinagar">Shri nagar</button>
-            <button class="area-tab" data-area="bhagyanagar">Bhagya nagar</button>
-            <button class="area-tab" data-area="shivajinagar">Shivaji nagar</button>
-        </div>
+        <div class="area-dropdown">
+    <form method="get">
+        <select name="area" onchange="this.form.submit()">
+            <option value="all">All Areas</option>
+
+            {% for a in areas %}
+            <option value="{{ a.area }}"
+                {% if selected_area == a.area %}selected{% endif %}>
+                {{ a.area }}
+            </option>
+            {% endfor %}
+        </select>
+    </form>
+</div>
         <div class="collectors-grid">
             {% for coll in collector %}
-            <div class="collector-card" data-area="shrinagar">
+            <div class="collector-card" data-area="{{ coll.area }}">
                 
                 <div class="collector-header">
                     <div class="collector-avatar">R</div>
@@ -121,268 +129,6 @@
                 </div>
             </div>
             {% endfor %}
-
-            <!-- <div class="collector-card" data-area="shrinagar">
-                <div class="collector-header">
-                    <div class="collector-avatar">P</div>
-                    <div class="collector-name">
-                        <h3>Priya Sharma</h3>
-                        <span class="collector-status">ACTIVE</span>
-                    </div>
-                </div>
-                <div class="collector-details">
-                    <div class="detail-row">
-                        <i class="fas fa-phone"></i>
-                        <span class="label">Phone:</span>
-                        <span class="value">+91 98765 43211</span>
-                    </div>
-                    <div class="detail-row">
-                        <i class="fas fa-id-card"></i>
-                        <span class="label">ID:</span>
-                        <span class="value">COL002</span>
-                    </div>
-                    <div class="detail-row">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span class="label">Area:</span>
-                        <span class="value">Shri nagar</span>
-                    </div>
-                </div>
-                <div class="collector-stats">
-                    <div class="collector-stat">
-                        <div class="number">0</div>
-                        <div class="label">Collected</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="collector-card" data-area="shrinagar">
-                <div class="collector-header">
-                    <div class="collector-avatar">A</div>
-                    <div class="collector-name">
-                        <h3>Amit Verma</h3>
-                        <span class="collector-status">ACTIVE</span>
-                    </div>
-                </div>
-                <div class="collector-details">
-                    <div class="detail-row">
-                        <i class="fas fa-phone"></i>
-                        <span class="label">Phone:</span>
-                        <span class="value">+91 98765 43212</span>
-                    </div>
-                    <div class="detail-row">
-                        <i class="fas fa-id-card"></i>
-                        <span class="label">ID:</span>
-                        <span class="value">COL003</span>
-                    </div>
-                    <div class="detail-row">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span class="label">Area:</span>
-                        <span class="value">Shri nagar</span>
-                    </div>
-                </div>
-                <div class="collector-stats">
-                    <div class="collector-stat">
-                        <div class="number">0</div>
-                        <div class="label">Collected</div>
-                    </div>
-                </div>
-            </div>
-            <div class="collector-card" data-area="bhagyanagar">
-                <div class="collector-header">
-                    <div class="collector-avatar">S</div>
-                    <div class="collector-name">
-                        <h3>Suresh Patel</h3>
-                        <span class="collector-status">ACTIVE</span>
-                    </div>
-                </div>
-                <div class="collector-details">
-                    <div class="detail-row">
-                        <i class="fas fa-phone"></i>
-                        <span class="label">Phone:</span>
-                        <span class="value">+91 98765 43213</span>
-                    </div>
-                    <div class="detail-row">
-                        <i class="fas fa-id-card"></i>
-                        <span class="label">ID:</span>
-                        <span class="value">COL004</span>
-                    </div>
-                    <div class="detail-row">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span class="label">Area:</span>
-                        <span class="value">Bhagya nagar</span>
-                    </div>
-                </div>
-                <div class="collector-stats">
-                    <div class="collector-stat">
-                        <div class="number">0</div>
-                        <div class="label">Collected</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="collector-card" data-area="bhagyanagar">
-                <div class="collector-header">
-                    <div class="collector-avatar">M</div>
-                    <div class="collector-name">
-                        <h3>Meena Singh</h3>
-                        <span class="collector-status">ACTIVE</span>
-                    </div>
-                </div>
-                <div class="collector-details">
-                    <div class="detail-row">
-                        <i class="fas fa-phone"></i>
-                        <span class="label">Phone:</span>
-                        <span class="value">+91 98765 43214</span>
-                    </div>
-                    <div class="detail-row">
-                        <i class="fas fa-id-card"></i>
-                        <span class="label">ID:</span>
-                        <span class="value">COL005</span>
-                    </div>
-                    <div class="detail-row">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span class="label">Area:</span>
-                        <span class="value">Bhagya nagar</span>
-                    </div>
-                </div>
-                <div class="collector-stats">
-                    <div class="collector-stat">
-                        <div class="number">0</div>
-                        <div class="label">Collected</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="collector-card" data-area="bhagyanagar">
-                <div class="collector-header">
-                    <div class="collector-avatar">V</div>
-                    <div class="collector-name">
-                        <h3>Vijay Gupta</h3>
-                        <span class="collector-status">ACTIVE</span>
-                    </div>
-                </div>
-                <div class="collector-details">
-                    <div class="detail-row">
-                        <i class="fas fa-phone"></i>
-                        <span class="label">Phone:</span>
-                        <span class="value">+91 98765 43215</span>
-                    </div>
-                    <div class="detail-row">
-                        <i class="fas fa-id-card"></i>
-                        <span class="label">ID:</span>
-                        <span class="value">COL006</span>
-                    </div>
-                    <div class="detail-row">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span class="label">Area:</span>
-                        <span class="value">Bhagya nagar</span>
-                    </div>
-                </div>
-                <div class="collector-stats">
-                    <div class="collector-stat">
-                        <div class="number">0</div>
-                        <div class="label">Collected</div>
-                    </div>
-                </div>
-            </div>
-            <div class="collector-card" data-area="shivajinagar">
-                <div class="collector-header">
-                    <div class="collector-avatar">K</div>
-                    <div class="collector-name">
-                        <h3>Kiran Reddy</h3>
-                        <span class="collector-status">ACTIVE</span>
-                    </div>
-                </div>
-                <div class="collector-details">
-                    <div class="detail-row">
-                        <i class="fas fa-phone"></i>
-                        <span class="label">Phone:</span>
-                        <span class="value">+91 98765 43216</span>
-                    </div>
-                    <div class="detail-row">
-                        <i class="fas fa-id-card"></i>
-                        <span class="label">ID:</span>
-                        <span class="value">COL007</span>
-                    </div>
-                    <div class="detail-row">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span class="label">Area:</span>
-                        <span class="value">Shivaji nagar</span>
-                    </div>
-                </div>
-                <div class="collector-stats">
-                    <div class="collector-stat">
-                        <div class="number">0</div>
-                        <div class="label">Collected</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="collector-card" data-area="shivajinagar">
-                <div class="collector-header">
-                    <div class="collector-avatar">D</div>
-                    <div class="collector-name">
-                        <h3>Divya Nair</h3>
-                        <span class="collector-status">ACTIVE</span>
-                    </div>
-                </div>
-                <div class="collector-details">
-                    <div class="detail-row">
-                        <i class="fas fa-phone"></i>
-                        <span class="label">Phone:</span>
-                        <span class="value">+91 98765 43217</span>
-                    </div>
-                    <div class="detail-row">
-                        <i class="fas fa-id-card"></i>
-                        <span class="label">ID:</span>
-                        <span class="value">COL008</span>
-                    </div>
-                    <div class="detail-row">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span class="label">Area:</span>
-                        <span class="value">Shivaji nagar</span>
-                    </div>
-                </div>
-                <div class="collector-stats">
-                    <div class="collector-stat">
-                        <div class="number">0</div>
-                        <div class="label">Collected</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="collector-card" data-area="shivajinagar">
-                <div class="collector-header">
-                    <div class="collector-avatar">N</div>
-                    <div class="collector-name">
-                        <h3>Naveen Rao</h3>
-                        <span class="collector-status">ACTIVE</span>
-                    </div>
-                </div>
-                <div class="collector-details">
-                    <div class="detail-row">
-                        <i class="fas fa-phone"></i>
-                        <span class="label">Phone:</span>
-                        <span class="value">+91 98765 43218</span>
-                    </div>
-                    <div class="detail-row">
-                        <i class="fas fa-id-card"></i>
-                        <span class="label">ID:</span>
-                        <span class="value">COL009</span>
-                    </div>
-                    <div class="detail-row">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span class="label">Area:</span>
-                        <span class="value">Shivaji nagar</span>
-                    </div>
-                </div>
-                <div class="collector-stats">
-                    <div class="collector-stat">
-                        <div class="number">0</div>
-                        <div class="label">Collected</div>
-                    </div>
-                </div>
-            </div> -->
            
         </div>
         
@@ -392,10 +138,27 @@
                 <h2><i class="fas fa-trash-alt"></i> Garbage Reports</h2>
             </div>
             <div class="table-tabs">
-                <button class="table-tab active" data-status="all">All</button>
-                <button class="table-tab" data-status="pending">Pending</button>
-                <button class="table-tab" data-status="assigned">Assigned</button>
-                <button class="table-tab" data-status="collected">Collected</button>
+                <div class="table-tabs">
+             <a href="/dashboard"
+       class="table-tab {% if not rstatus %}active{% endif %}">
+        All
+    </a>
+
+    <a href="/dashboard?rstatus=pending"
+       class="table-tab {% if rstatus == 'pending' %}active{% endif %}">
+        Pending
+    </a>
+
+    <a href="/dashboard?rstatus=assigned"
+       class="table-tab {% if rstatus == 'assigned' %}active{% endif %}">
+        Assigned
+    </a>
+
+    <a href="/dashboard?rstatus=collected"
+       class="table-tab {% if rstatus == 'collected' %}active{% endif %}">
+        Collected
+    </a>
+</div>
             </div>
 
             <table id="reportsTable">

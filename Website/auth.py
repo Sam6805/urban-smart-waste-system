@@ -60,8 +60,8 @@ def login():
         admin = cur.fetchone()
 
         if admin and admin['password'] == password:
-            session['user_id'] = admin['id']
-            session['user_name'] = admin['name']
+            session['admin_id'] = admin['id']
+            session['admin_name'] = admin['name']
             return redirect(url_for('admin_view.dashboard'))
         else:
             flash("Invalid email or password", "danger")

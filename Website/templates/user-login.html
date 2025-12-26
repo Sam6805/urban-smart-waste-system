@@ -36,7 +36,7 @@
                     <input type="password" placeholder="Password" name="password"  required >
                 </div>
                 <button type="submit" class="login-button">Login</button>
-                <!-- {% with messages = get_flashed_messages(with_categories=True) %}
+                {% with messages = get_flashed_messages(with_categories=True) %}
                     {% if messages %}
                         {% for category, message in messages %}
                             <div class="alert alert-{{ category }}" 
@@ -45,7 +45,7 @@
                             </div>
                         {% endfor %}
                     {% endif %}
-                {% endwith %} -->
+                {% endwith %}
                 
 
                 <p>Don't have an account?<a href="{{ url_for('auth.user_signup')}}"> Sign Up</a></p>
@@ -64,7 +64,7 @@
 
     </footer>
 
-    <!-- <script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(function(alert) {
@@ -75,7 +75,7 @@
                 }, 2000);
             });
         });
-    </script> -->
+    </script>
 
 </body>
 
