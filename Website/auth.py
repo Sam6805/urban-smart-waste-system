@@ -62,7 +62,7 @@ def login():
         if admin and admin['password'] == password:
             session['user_id'] = admin['id']
             session['user_name'] = admin['name']
-            return redirect(url_for('view.dashboard'))
+            return redirect(url_for('admin_view.dashboard'))
         else:
             flash("Invalid email or password", "danger")
             return redirect(url_for("auth.login"))
@@ -131,7 +131,7 @@ def user_login():
         if user and user['password'] == password:
             session['user_id'] = user['id']
             session['user_name'] = user['name']
-            return redirect(url_for('view.dashboard'))
+            return redirect(url_for('user_view.user_reportpage'))
         else:
             flash("Invalid email or password", "danger")
             return redirect(url_for("auth.login"))
@@ -197,9 +197,9 @@ def collector_login():
         collector = cur.fetchone()
 
         if collector and collector['password'] == password:
-            session['user_id'] = collector['id']
-            session['user_name'] = collector['name']
-            return redirect(url_for('view.dashboard'))
+            session['collector_id'] = collector['id']
+            session['collector_name'] = collector['name']
+            return redirect(url_for('collector_view.collector_homescreen'))
         else:
             flash("Invalid email or password", "danger")
             return redirect(url_for("auth.collector_login"))

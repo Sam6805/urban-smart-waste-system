@@ -10,9 +10,13 @@ def create_app():
 
 
     from .auth import auth
-    from .admin import view
+    from .admin import admin_view
+    from .user import user_view
+    from .collector import collector_view
 
     app.register_blueprint(auth, url_prefix='/')
-    app.register_blueprint(view, url_prefix='/')
+    app.register_blueprint(admin_view, url_prefix='/')
+    app.register_blueprint(user_view, url_prefix='/')
+    app.register_blueprint(collector_view, url_prefix='/')
 
     return app

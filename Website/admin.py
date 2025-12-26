@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, session, redirect, url_for
 from .models import get_db_connection
 
-view = Blueprint('view', __name__)
+admin_view = Blueprint('admin_view', __name__)
 
-@view.route('/')
+@admin_view.route('/')
 def index():
     return redirect(url_for('auth.login'))
 
@@ -45,7 +45,7 @@ def report():
     return report
 
 
-@view.route('/dashboard')
+@admin_view.route('/dashboard')
 def dashboard():
     if 'admin_id' not in session:
         return redirect(url_for('auth.login'))

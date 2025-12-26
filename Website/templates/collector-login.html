@@ -282,41 +282,37 @@ input:focus {
       </nav>
     <main>
         <div class="login-form">
-            <form action="" method="POST">
-                <h1>Welcome back</h1>
-                <p>Collector Login in to Waste Mangament</p>
-                <form action="/collector-login" method="POST" class="login-form">
-                    <div class="form-group">
-                        <span class="input-icon"><i class="fa-solid fa-user"></i></span>
-                        <input type="email" name="email" placeholder="Email" required>
-                    </div>
-                    <div class="form-group">
-                        <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" name="password" placeholder="Password"  required >
-                    </div>
-                    <button type="submit" class="login-button">Login</button>
-                    {% with messages = get_flashed_messages(with_categories=True) %}
-                        {% if messages %}
-                           {% for category, message in messages %}
-                            <div class="alert alert-{{ category }}" 
-                                 style="color:#e93e4f;font-size:18px;text-align:center;margin-top:10px;">
-                                {{ message }}
-                            </div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
-
-                </form>
-                <p>Don't have an account?<a href="{{ url_for('auth.collector_signup') }}" > Sign Up</a></p>
-
-                <h5>Quick accounts</h5>
-                <div class="accounts">
-                    <button type="button" class="account-button" onclick="window.location.href='/login'"><i class="fa-solid fa-user-shield"></i> Admin</button>
-                    <button type="button" class="account-button" onclick="window.location.href='/collector_login'"><i class="fa-solid fa-recycle"></i> Collector</button>
-                    <button type="button" class="account-button" onclick="window.location.href='/user_login'"><i class="fa-solid fa-user"></i> User</button>
+            <h1>Welcome back</h1>
+            <p>Collector Login to Waste Management</p>
+            <form action="/collector_login" method="POST">
+                <div class="form-group">
+                    <span class="input-icon"><i class="fa-solid fa-user"></i></span>
+                    <input type="email" name="email" placeholder="Email" required>
                 </div>
-
+                <div class="form-group">
+                    <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="login-button">Login</button>
+                {% with messages = get_flashed_messages(with_categories=True) %}
+                    {% if messages %}
+                       {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}" 
+                             style="color:#e93e4f;font-size:18px;text-align:center;margin-top:10px;">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
             </form>
+            <p>Don't have an account?<a href="{{ url_for('auth.collector_signup') }}"> Sign Up</a></p>
+
+            <h5>Quick accounts</h5>
+            <div class="accounts">
+                <button type="button" class="account-button" onclick="window.location.href='/login'"><i class="fa-solid fa-user-shield"></i> Admin</button>
+                <button type="button" class="account-button" onclick="window.location.href='/collector_login'"><i class="fa-solid fa-recycle"></i> Collector</button>
+                <button type="button" class="account-button" onclick="window.location.href='/user_login'"><i class="fa-solid fa-user"></i> User</button>
+            </div>
         </div>
     </main>
     <footer>
