@@ -1,93 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Report Garbage</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Reports</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
-        }
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+    }
 
-        .header {
-            background: #2e7d32;
-            color: white;
-            padding: 18px;
-            font-size: 20px;
-            font-weight: bold;
-        }
+    /* Header */
+    .header {
+        background: #2e7d32;
+        color: white;
+        padding: 18px;
+        font-size: 22px;
+        font-weight: bold;
+    }
 
-        .container { padding: 16px; }
+    /* Main container */
+    .container {
+        padding: 15px;
+    }
 
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 18px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+    /* Report Card */
+    .report-card {
+        background: white;
+        border-radius: 14px;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
 
-        .photo-box {
-            background: #e0e0e0;
-            height: 200px;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            margin-bottom: 15px;
-            overflow: hidden;
-        }
+    .report-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
 
-        .photo-box img { height: 100%; width: auto; }
+    .report-content {
+        padding: 15px;
+    }
 
-        .btn {
-            width: 100%;
-            background: #1e88e5;
-            border: none;
-            padding: 14px;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 10px;
-            cursor: pointer;
-        }
+    /* Collected status tag */
+    .status {
+        display: inline-block;
+        background: #4caf50;
+        color: white;
+        padding: 6px 14px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 20px;
+    }
 
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-        }
+    .date {
+        float: right;
+        color: #555;
+        font-size: 14px;
+        margin-top: 6px;
+    }
 
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background: white;
-            border-top: 1px solid #ddd;
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0;
-        }
+    .location {
+        margin-top: 15px;
+        font-size: 15px;
+        color: #444;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
 
-        .bottom-nav a {
-            text-decoration: none;
-            color: #777;
-            font-size: 14px;
-            font-weight: bold;
-        }
-    </style>
+    .collector {
+        margin-top: 10px;
+        font-size: 16px;
+        color: #2e7d32;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: white;
+        border-top: 1px solid #ddd;
+        display: flex;
+        justify-content: space-around;
+        padding: 8px 0;
+    }
+
+    .bottom-nav div {
+        text-align: center;
+        color: #777;
+        font-size: 13px;
+    }
+
+    .active {
+        color: #2e7d32 !important;
+        font-weight: bold;
+    }
+</style>
 </head>
 
 <body>
 
-<div class="header">
-    Report Garbage
+    <!-- Header -->
+   <div class="header">
+    My Reports
     <form action="{{ url_for('logout') }}" method="get" style="float:right; margin:0;">
         <button type="submit" style="color:white; background:transparent; border:none; font-weight:bold;">
             Logout
@@ -95,87 +119,39 @@
     </form>
 </div>
 
-<div class="container">
+    <div class="container">
 
-<form action="{{ url_for('submit_report') }}" method="POST" enctype="multipart/form-data">
+{% for report in reports %}
+<div class="report-card">
 
-    <!-- Photo -->
-    <div class="card">
-        <div class="photo-box" id="photoPreview">
-            <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png">
-            <p>No photo uploaded</p>
+    {% if report.image %}
+    <img src="{{ url_for('static', filename='uploads/' ~ report.image) }}">
+    {% endif %}
+
+    <div class="report-content">
+        <span class="status">{{ report.status }}</span>
+        <span class="date">{{ report.created_at.strftime('%d/%m/%Y') }}</span>
+
+        <div class="location">
+            📍 {{ report.latitude }}, {{ report.longitude }}
         </div>
 
-        <input type="file" id="photoUpload" name="image" accept="image/*" style="display:none;" required>
-
-        <button type="button" class="btn"
-            onclick="document.getElementById('photoUpload').click();">
-            📁 Upload Photo
-        </button>
+        <div class="collector">
+            🚛 Collector: Assigned
+        </div>
     </div>
-
-    <!-- Location -->
-    <div class="card">
-        <div class="label-title">📍 Location:</div>
-        <p id="locationText">Upload photo to get location</p>
-
-        <input type="hidden" name="latitude" id="latField">
-        <input type="hidden" name="longitude" id="lngField">
-    </div>
-
-    <!-- User Info -->
-    <div class="card">
-        <div class="label-title">👤 Your Information:</div>
-        <p>Name: {{ session['username'] }}</p>
-        <p>Phone: {{ phone }}</p>
-    </div>
-
-    <!-- Description -->
-    <div class="card">
-        <textarea name="description" rows="4" placeholder="Write something..."></textarea>
-    </div>
-
-    <button type="submit" class="btn">Submit Report</button>
-
-</form>
 
 </div>
+{% endfor %}
 
-<div class="bottom-nav">
+</div>
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
     <a href="{{ url_for('report_garbage') }}">📍 Report Garbage</a>
-    <a href="{{ url_for('my_reports') }}">📄 My Reports</a>
+    <a href="{{ url_for('my_reports') }}" class="active">📄 My Reports</a>
     <a href="{{ url_for('profile') }}">👤 Profile</a>
 </div>
 
-<script>
-const uploadInput = document.getElementById("photoUpload");
-const photoPreview = document.getElementById("photoPreview");
-
-uploadInput.onchange = () => {
-    const file = uploadInput.files[0];
-
-    if (file) {
-        // Preview image
-        const reader = new FileReader();
-        reader.onload = () => {
-            photoPreview.innerHTML =
-                `<img src="${reader.result}" style="height:100%; width:auto;">`;
-        };
-        reader.readAsDataURL(file);
-
-        // Fetch location AFTER photo upload
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(pos => {
-                latField.value = pos.coords.latitude;
-                lngField.value = pos.coords.longitude;
-
-                locationText.innerText =
-                    pos.coords.latitude + ", " + pos.coords.longitude;
-            });
-        }
-    }
-};
-</script>
 
 </body>
 </html>
