@@ -47,7 +47,7 @@ def report():
 
 @view.route('/dashboard')
 def dashboard():
-    if 'user_id' not in session:
+    if 'admin_id' not in session:
         return redirect(url_for('auth.login'))
     
     conn = get_db_connection()

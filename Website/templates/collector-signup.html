@@ -123,7 +123,19 @@
     <div class="right-pane">
       <div class="signup-container">
         <h2>Create Your Account</h2>
-        <form action="/register" method="post">
+        
+        <!-- {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %} -->
+        
+        <form action="/collector_signup" method="POST">
 
         <label>Name</label>
         <div class="error" id="nameError"></div>
@@ -144,10 +156,10 @@
        pattern="[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}"
        title="Format must be MH12AB1234.">
 
-        <label>Address</label>
+        <!-- <label>Address</label>
         <input type="text" id="address" name="address"
        required minlength="5"
-       title="Enter a proper address (minimum 5 characters).">
+       title="Enter a proper address (minimum 5 characters)."> -->
 
 
         <label>Email</label>

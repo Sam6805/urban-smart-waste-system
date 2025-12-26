@@ -10,7 +10,7 @@ def create_app():
 
 
     from .auth import auth
-    from .view import view
+    from .admin import view
 
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(view, url_prefix='/')
