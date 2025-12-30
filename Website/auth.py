@@ -192,17 +192,22 @@ def collector_login():
         conn = get_db_connection()
         cur = conn.cursor(dictionary=True)
 
-        sql = "SELECT * FROM collector WHERE email = %s"
-        cur.execute(sql, (email,))
-        collector = cur.fetchone()
+        try:
+            sql = "SELECT * FROM collector WHERE email = %s"
+            cur.execute(sql, (email,))
+            collector = cur.fetchone()
 
-        if collector and collector['password'] == password:
-            session['collector_id'] = collector['id']
-            session['collector_name'] = collector['name']
-            return redirect(url_for('collector_view.collector_homescreen'))
-        else:
-            flash("Invalid email or password", "danger")
-            return redirect(url_for("auth.collector_login"))
+            if collector and collector['password'] == password:
+                session['collector_id'] = collector['id']
+                session['collector_name'] = collector['name']
+                session['vehicle_no'] = collector['vehicle_no']
+                return redirect(url_for('collector_view.collector_homescreen'))
+            else:
+                flash("Invalid email or password", "danger")
+                return redirect(url_for("auth.collector_login"))
+        finally:
+            cur.close()
+            conn.close()
     return render_template("collector-login.html")
 
 
