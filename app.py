@@ -6,12 +6,12 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.secret_key = "secret123"
 
-# ================= IMAGE UPLOAD CONFIG =================
+# IMAGE UPLOAD CONFIG 
 UPLOAD_FOLDER = "static/uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-# ================= MYSQL CONNECTION =================
+# MYSQL CONNECTION 
 def get_db_connection():
     return mysql.connector.connect(
         host="localhost",
@@ -20,7 +20,7 @@ def get_db_connection():
         database="smart_garbage"
     )
 
-# ================= CREATE TABLES ===========S======
+# CREATE TABLES
 def init_db():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -57,7 +57,7 @@ def init_db():
 
 init_db()
 
-# ================= REGISTRATION =================
+# REGISTRATION
 @app.route("/")
 def register_page():
     return render_template("register.html")
@@ -98,7 +98,7 @@ def register_user():
 
     return redirect(url_for("report_garbage"))
 
-# ================= REPORT GARBAGE PAGE =================
+# REPORT GARBAGE PAGE
 @app.route("/user")
 def report_garbage():
     if "user_id" not in session:
@@ -119,7 +119,7 @@ def report_garbage():
         phone=user["phone"]
     )
 
-# ================= SUBMIT REPORT =================
+# SUBMIT REPORT
 @app.route("/submit-report", methods=["POST"])
 def submit_report():
     if "user_id" not in session:
@@ -150,7 +150,7 @@ def submit_report():
 
     return redirect(url_for("my_reports"))
 
-# ================= MY REPORTS =================
+# MY REPORTS
 @app.route("/my-reports")
 def my_reports():
     if "user_id" not in session:
@@ -173,7 +173,7 @@ def my_reports():
 
     return render_template("Myreport.html", reports=reports)
 
-# ================= PROFILE =================
+# PROFILE
 @app.route("/profile")
 def profile():
     if "user_id" not in session:
@@ -196,6 +196,6 @@ def logout():
     return redirect(url_for("register_page"))
 
 
-# ================= RUN =================
+# RUN
 if __name__ == "__main__":
     app.run(debug=True)
