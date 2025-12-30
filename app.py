@@ -30,7 +30,7 @@ def init_db():
             id INT AUTO_INCREMENT PRIMARY KEY,
             fullname VARCHAR(100),
             email VARCHAR(100) UNIQUE,
-            phone VARCHAR(15),
+            phone INT(10),
             address TEXT,
             area VARCHAR(50),
             username VARCHAR(50) UNIQUE,
