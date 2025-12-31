@@ -1,4 +1,2 @@
-# smartgarbage-demo
-This is my first git Repository
-Author - Shrija
-Author - Manasvi
+# urban-smart-waste-system
+Smart Waste Segregation and Monitoring System for Urban Local Bodies

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Smart Waste Management</title>
+    <link rel="icon" type="image/png" href="../static/images/logo.png">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+</head>
+
+<body class="dashboard">
+    <div class="dashboard-header">
+        <div class="dashboard-header-content">
+            <h1><i class="fa-solid fa-recycle"></i> Smart Garbage System – Admin Dashboard</h1>
+            <div class="user-info">
+                <span><i class="fas fa-user-circle"></i> Admin</span>
+                <a href="/login" class="btn btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-content">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                   <img src="../static/images/total_reports_icon.png" alt="Total Reports"
+                        style="width: 40px; height: 40px;">
+                </div>
+                <div class="stat-info">
+                    <h3>{{ total_report}}</h3>
+                    <p>Total Reports</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange">
+                    <img src="../static/images/pending_icon.png" alt="Pending"
+                        style="width: 40px; height: 40px;">
+                </div>
+                <div class="stat-info">
+                    <h3>{{ pending_rep }}</h3>
+                    <p>Pending</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <img src="../static/images/collected_icon.png" alt="Collected"
+                        style="width: 40px; height: 40px;">
+                </div>
+                <div class="stat-info">
+                    <h3>{{ collected_rep }}</h3>
+                    <p>Collected</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon purple">
+                    <img src="../static/images/active_collectors_icon.png"
+                        alt="Active Collectors" style="width: 40px; height: 40px;">
+                </div>
+                <div class="stat-info">
+                    <h3>{{ active_coll }}</h3>
+                    <p>Active Collectors</p>
+                </div>
+            </div>
+        </div>
+       
+        <div class="section-header">
+            <h2><i class="fas fa-user-tie"></i> Collectors by Area</h2>
+        </div>
+        <div class="area-dropdown">
+    <form method="get">
+        <select name="area" onchange="this.form.submit()">
+            <option value="all">All Areas</option>
+
+            {% for a in areas %}
+            <option value="{{ a.area }}"
+                {% if selected_area == a.area %}selected{% endif %}>
+                {{ a.area }}
+            </option>
+            {% endfor %}
+        </select>
+    </form>
+</div>
+        <div class="collectors-grid">
+            {% for coll in collector %}
+            <div class="collector-card" data-area="{{ coll.area }}">
+                
+                <div class="collector-header">
+                    <div class="collector-avatar">R</div>
+                    <div class="collector-name">
+                        <h3>{{ coll.name}}</h3>
+                        {% if coll.isActive == 1%}
+                        <span class="collector-status">Active</span>
+                        {% else %}
+                        <span class="collector-status">Inactive</span>
+                        {% endif%}
+                    </div>
+                </div>
+                <div class="collector-details">
+                    <div class="detail-row">
+                        <i class="fas fa-phone"></i>
+                        <span class="label">Phone:</span>
+                        <span class="value">{{coll.phone_no}}</span>
+                    </div>
+                    <div class="detail-row">
+                        <i class="fas fa-id-card"></i>
+                        <span class="label">ID:</span>
+                        <span class="value">COL{{coll.id}}</span>
+                    </div>
+                    <div class="detail-row">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span class="label">Area:</span>
+                        <span class="value">{{coll.area}}</span>
+                    </div>
+                </div>
+                <div class="collector-stats">
+                    <div class="collector-stat">
+                        <div class="number">{{coll.total_collected}}</div>
+                        <div class="label">Collected</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+           
+        </div>
+        
+         
+        <div class="table-container mt-4">
+            <div class="section-header">
+                <h2><i class="fas fa-trash-alt"></i> Garbage Reports</h2>
+            </div>
+            <div class="table-tabs">
+                <div class="table-tabs">
+             <a href="/dashboard"
+       class="table-tab {% if not rstatus %}active{% endif %}">
+        All
+    </a>
+
+    <a href="/dashboard?rstatus=pending"
+       class="table-tab {% if rstatus == 'pending' %}active{% endif %}">
+        Pending
+    </a>
+
+    <a href="/dashboard?rstatus=assigned"
+       class="table-tab {% if rstatus == 'assigned' %}active{% endif %}">
+        Assigned
+    </a>
+
+    <a href="/dashboard?rstatus=collected"
+       class="table-tab {% if rstatus == 'collected' %}active{% endif %}">
+        Collected
+    </a>
+</div>
+            </div>
+
+            <table id="reportsTable">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>User</th>
+                        <th>Location</th>
+                        <th>Area</th>
+                        <th>Status</th>
+                        <th>Assigned Collector</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if report %}    
+                    {% for rep in report %}
+                    <tr>
+                        <td  style="text-align: center; color: #888; padding: 40px;">
+                            <img 
+        src="{{ url_for('static', filename=rep.photoUrl.lstrip('/')) }}"
+        alt="Garbage Image"
+        width="80"
+        height="80"
+        style="object-fit: cover; border-radius: 6px;"
+    >
+                        </td>
+                        <td style="text-align: center; color: #888; padding: 40px;">{{rep.userName}}</td>
+                        <td style="text-align: center; color: #888; padding: 40px;">{{rep.location}}</td>
+                        <td style="text-align: center; color: #888; padding: 40px;">{{rep.userAddress}}</td>
+                        <td style="text-align: center; color: #888; padding: 40px;">{{rep.status}}</td>
+                        <td style="text-align: center; color: #888; padding: 40px;">{{rep.assignedAt}}</td>
+                        <td style="text-align: center; color: #888; padding: 40px;">{{rep.createdAt}}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="7" style="text-align: center; color: #888; padding: 40px;">--</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <div class="table-container mt-4">
+            <div class="section-header">
+                <h2><i class="fas fa-users"></i> Registered Users</h2>
+            </div>
+
+            <table id="usersTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Registration Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if users %}
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.phone_no }}</td>
+                            <td>{{ user.address }}</td>
+                            <td>{{ user.regdate if user.regdate else 'N/A' }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: #888; padding: 40px;">No registered users yet</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+
+</html>

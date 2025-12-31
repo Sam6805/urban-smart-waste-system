@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="Wastenet" />
+  <title>Smart Waste Management</title>
+  <link rel="icon" type="image/png" href="../static/images/logo.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+  <link rel="Stylesheet" href="../static/css/style.css">
+  <style>
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fffefe;
+    }
+
+    .split-screen {
+      display: flex;
+      height: 100%;
+    }
+
+    .left-pane {
+      flex: 1;
+      background-color: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      color: #2E7D32;
+      font-size: 2rem;
+      font-weight: bold;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .right-pane {
+      flex: 1;
+      background-color: #F5F6D8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+      border-left: 5px solid #f3d9c1;
+    }
+
+    .signup-container {
+      width: 100%;
+      max-width: 420px;
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .signup-container h2 {
+      color: #1B5E20;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .form-label {
+      color: #0d0e0d;
+    }
+
+    .form-control {
+      border-radius: 8px;
+    }
+
+    .btn-primary {
+      background-color: #0E8A32;
+      border: none;
+      border-radius: 10px;
+    }
+
+    .btn-primary:hover {
+      background-color: #0E8A32;
+    }
+
+    .login-link {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      color: #0E8A32;
+      font-weight: 500;
+    }
+
+    .login-link:hover {
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+
+<body>
+  
+     <nav>
+        <div class="nav-bar">
+            <div class="logo">
+                <h2><i class="fa-solid fa-recycle"></i>Smart Garbage System</h2>
+            </div>
+            <div class="nav-signin">
+               <button class="button" onclick="window.location.href='/login'">Login</button>
+              <button class="button" onclick="window.location.href='/admin_signup'">Sign Up</button>
+            </div>
+
+        </div>
+    </nav>
+    <div class="right-pane">
+      <div class="signup-container">
+        <h2>Create Your Account</h2>
+        <form action="/admin_signup" method="POST"  >
+          <div class="mb-3">
+            <label>Full Name:</label>
+              <input type="text" id="fullName" name="fullName" required oninput="this.value=this.value.replace(/[^A-Za-z ]/g,''); 
+                this.setCustomValidity(this.value.trim()===''?'Enter a valid name':'');">
+
+          </div>
+
+          <div class="mb-3">
+            <label>Email:</label>
+             <input type="email" id="email" name="email" required oninput="
+                const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
+                this.setCustomValidity(pattern.test(this.value) ? '' : 'Enter a valid email'); 
+              ">
+
+          </div>
+
+          <div class="mb-3">
+            <label for="phone" class="form-label">Phone Number</label>
+              <input type="tel" id="phone" name="phone" required oninput="this.value=this.value.replace(/[^0-9]/g,''); this.setCustomValidity(this.value.length!==10?'Enter a valid 10-digit number':'');">
+          </div>
+
+          <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <textarea class="form-control" id="address" name="address" rows="2" required></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label>Password:</label>
+            <input type="password" id="password" name="password" required oninput="
+            const pattern1 = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            this.setCustomValidity(pattern1.test(this.value) 
+                                  ? '' 
+                                  : 'Password must be 8+ chars, include upper, lower, number & special char');
+       ">
+
+          </div>
+
+          <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" name="password" id="confirmPassword" required  oninput="this.setCustomValidity(
+             this.value !== document.getElementById('password').value 
+             ? 'Passwords do not match' : ''
+           )" />
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+          
+          {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" 
+                                 style="color:#e93e4f;font-size:18px;text-align:center;margin-top:10px;">
+                                {{ message }}
+                            </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </form>
+
+        <a href="{{ url_for('auth.login') }}" class="login-link">
+          Already have an account? Log in
+        </a>
+      </div>
+    </div>
+
+  <script>
+    const form = document.querySelector("form");
+    form.addEventListener("submit", function (e) {
+      const password = document.getElementById("password").value;
+      const confirm = document.getElementById("confirmPassword").value;
+      if (password !== confirm) {
+        alert("Passwords do not match!");
+        e.preventDefault();
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                setTimeout(function() {
+                    setTimeout(function() {
+                        alert.remove();
+                    }, 500);
+                }, 2000);
+            });
+        });
+  </script>
+</body>
+
+</html>
