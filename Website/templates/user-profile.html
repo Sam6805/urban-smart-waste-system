@@ -151,12 +151,16 @@
 <body>
 
     <!-- Header -->
-    <div class="header">Profile</div>
+    <div class="header">Profile
+        <a href="{{ url_for('user_view.logout') }}" style="color:white; background:transparent; border:none; cursor:pointer; text-decoration:none; float:right;">
+            Logout
+        </a>
+    </div>
 
     <!-- Profile Top -->
     <div class="profile-header">
         <div class="profile-circle">M</div>
-        <div class="username">Meera</div>
+        <div class="username">{{ session.get('user_name') }}</div>
         <div class="user-role">User Account</div>
     </div>
 
@@ -166,9 +170,9 @@
         <div class="card">
             <div class="card-title">Contact Information</div>
 
-            <div class="info-row">📞 1231231231</div>
-            <div class="info-row">📧 meera@gmail.com</div>
-            <div class="info-row">📍 Shivaji Nagar</div>
+            <div class="info-row">📞 {{ session.get('user_phone') }}</div>
+            <div class="info-row">📧 {{ session.get('user_email') }}</div>
+            <div class="info-row">📍 {{ session.get('user_address') }}</div>
         </div>
 
         <!-- Statistics -->
@@ -196,10 +200,10 @@
     </div>
 
     <div class="bottom-nav">
-    <a href="user-reportpage.html">📍 Report Garbage</a>
-    <a href="user-reportstat.html" >📄 My Reports</a>
-    <a href="user-profile.html">👤 Profile</a>
-</div>
+        <a href="/user_reportpage">📍 Report Garbage</a>
+        <a href="/user_myreport" >📄 My Reports</a>
+        <a href="/user_profile">👤 Profile</a>
+    </div>
 
 
 </body>

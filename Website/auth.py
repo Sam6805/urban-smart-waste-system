@@ -62,6 +62,7 @@ def login():
         if admin and admin['password'] == password:
             session['admin_id'] = admin['id']
             session['admin_name'] = admin['name']
+            
             return redirect(url_for('admin_view.dashboard'))
         else:
             flash("Invalid email or password", "danger")
@@ -131,6 +132,10 @@ def user_login():
         if user and user['password'] == password:
             session['user_id'] = user['id']
             session['user_name'] = user['name']
+            session['user_phone'] = user['phone_no']
+            session['user_email'] =  user['email']
+            session['user_address'] = user['address']
+            
             return redirect(url_for('user_view.user_reportpage'))
         else:
             flash("Invalid email or password", "danger")
