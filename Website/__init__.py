@@ -7,7 +7,7 @@ load_dotenv()
 def create_app():
     app = Flask(__name__)
     app.secret_key = os.getenv("SECRET_KEY")
-
+    app.config['UPLOAD_FOLDER'] = 'static/upload'
 
     from .auth import auth
     from .admin import admin_view

@@ -114,25 +114,51 @@
 
     <div class="container">
 
-        <!-- Report Card -->
-        <div class="report-card">
-            <img src="https://thumbs.dreamstime.com/b/pile-garbage-plastic-black-trash-bag-waste-many-footpath-pollution-trash-plastic-waste-bag-foam-tray-garbage-119376415.jpg" alt="Garbage Image">
+        {% if reports %}
+            {% for report in reports %}
+            <!-- Report Card -->
+            <div class="report-card">
+                {% if report.photoUrl %}
+                <img src="{{ url_for('static', filename='upload/' + report.photoUrl) }}" alt="Report Image">
+                {% else %}
+                <img src="https://thumbs.dreamstime.com/b/pile-garbage-plastic-black-trash-bag-waste-many-footpath-pollution-trash-plastic-waste-bag-foam-tray-garbage-119376415.jpg" alt="Default Image">
+                {% endif %}
 
-            <div class="report-content">
+                <div class="report-content">
 
-                <span class="status">COLLECTED</span>
-                <span class="date">11/20/2025</span>
+                    <span class="status" >
+                        {{ report.status }}
+                    </span>
+                    <span class="date">{{ report.formatted_date }}</span>
 
-                <div class="location">
-                    📍 37.421998, -122.084000
+                    <div class="location">
+                        📍 
+                        {% if report.location_data.latitude and report.location_data.longitude %}
+                            {{ report.location_data.latitude }}, {{ report.location_data.longitude }}
+                        {% else %}
+                            Location not available
+                        {% endif %}
+                    </div>
+
+                    {% if report.description %}
+                    <div style="margin-top: 10px; color: #666;">
+                        📝 {{ report.description }}
+                    </div>
+                    {% endif %}
+
+                    <div class="collector">
+                        🚛 Collector: {{ report.collectorName if report.collectorName else 'Not assigned' }}
+                    </div>
+
                 </div>
-
-                <div class="collector">
-                    🚛 Collector: Vaibhav
-                </div>
-
             </div>
-        </div>
+            {% endfor %}
+        {% else %}
+            <div style="text-align: center; margin-top: 50px; color: #999;">
+                <p style="font-size: 18px;">📄 No reports yet</p>
+                <p>Submit your first report to see it here!</p>
+            </div>
+        {% endif %}
 
     </div>
 

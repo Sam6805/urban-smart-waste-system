@@ -159,7 +159,7 @@
 
     <!-- Profile Top -->
     <div class="profile-header">
-        <div class="profile-circle">M</div>
+        <div class="profile-circle">{{ user_name[0]|upper }}</div>
         <div class="username">{{ session.get('user_name') }}</div>
         <div class="user-role">User Account</div>
     </div>

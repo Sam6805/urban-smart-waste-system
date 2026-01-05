@@ -73,6 +73,44 @@
             background: #1565c0;
         }
 
+        .btn-success {
+            background: #2e7d32;
+        }
+
+        .btn-success:hover {
+            background: #1b5e20;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .upload-label {
+            display: block;
+            width: 100%;
+            background: #1e88e5;
+            border: none;
+            padding: 14px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .upload-label:hover {
+            background: #1565c0;
+        }
+
+        .file-name {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
         .small-link {
             color: #1e88e5;
             text-decoration: none;
@@ -100,25 +138,26 @@
 
         /* Bottom Navigation */
         .bottom-nav {
-            position: fixed;
             bottom: 0;
             width: 100%;
             background: white;
             border-top: 1px solid #ddd;
             display: flex;
             justify-content: space-around;
-            padding: 8px 0;
+            padding: 12px 0;
         }
 
-        .bottom-nav div {
+        .bottom-nav a {
             text-align: center;
             color: #1e88e5;
             font-size: 14px;
             font-weight: bold;
+            text-decoration: none;
+            flex: 1;
         }
 
-        .bottom-nav .inactive {
-            color: #777;
+        .bottom-nav a:hover {
+            color: #2e7d32;
         }
     </style>
 </head>
@@ -130,65 +169,79 @@
 
     <div class="container">
 
-        <!-- Photo Section -->
-        <div class="card">
-            <div class="photo-box" id="photoPreview">
-                <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png" id="defaultIcon">
-                <p id="noPhotoText">No photo uploaded</p>
+        <!-- Complete Report Form -->
+        <form action="/user_reportpage" method="POST" enctype="multipart/form-data" id="uploadForm">
+            
+            <!-- Photo Section -->
+            <div class="card">
+                <div class="photo-box" id="photoPreview">
+                    <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png" id="defaultIcon">
+                    <p id="noPhotoText">No photo uploaded</p>
+                </div>
+                <label for="Photo" class="upload-label">📁 Choose Photo</label>
+                <input type="file" name="Photo" id="Photo" accept="image/*" required>
+                <div id="fileName" class="file-name"></div>
             </div>
 
-            <input type="file" id="photoUpload" accept="image/*" style="display:none;">
-            
-            <button class="btn" onclick="document.getElementById('photoUpload').click();">
-                📁 Upload Photo
+            <!-- Location Section -->
+            <div class="card">
+                <div class="label-title">📍 Location:</div>
+                <p id="locationDisplay">Getting location...</p>
+                <input type="hidden" name="latitude" id="latitude">
+                <input type="hidden" name="longitude" id="longitude">
+            </div>
+
+            <!-- User Info -->
+            <div class="card">
+                <div class="label-title">👤 Your Information:</div>
+                <p>Name: {{ session.get('user_name') }}</p>
+                <p>Phone: {{ session.get('user_phone') }}</p>
+            </div>
+
+            <!-- Description -->
+            <div class="card">
+                <div class="label-title">📝 Description (Optional):</div>
+                <textarea name="description" rows="4" placeholder="Write something..."></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button class="btn btn-success" type="submit">
+                ✓ Submit Report
             </button>
-        </div>
 
-        <!-- Location Section -->
-        <div class="card">
-            <div class="label-title">📍 Location:</div>
-            <p>37.421998, -122.084000</p>
-            <a href="#" class="small-link">🔄 Refresh Location</a>
-        </div>
-
-        <!-- User Info -->
-        <div class="card">
-            <div class="label-title">👤 Your Information:</div>
-            <p>Name:{{ session.get('user_name') }}</p>
-            <p>Phone: {{ session.get('user_phone') }}</p>
-        </div>
-
-        <!-- Description -->
-        <div class="card">
-            <div class="label-title">📝 Description (Optional):</div>
-            <textarea rows="4" placeholder="Write something..."></textarea>
-        </div>
+        </form>
 
     </div>
 
    <div class="bottom-nav">
      <a href="/user_reportpage">📍 Report Garbage</a>
-    <a href="/user_myreport" >📄 My Reports</a>
-    <a href="/user_profile">👤 Profile</a>
-</div>
+     <a href="/user_myreport" >📄 My Reports</a>
+     <a href="/user_profile">👤 Profile</a>
+    </div>
 
 
 
     <script>
-        // Display uploaded image
-        const uploadInput = document.getElementById("photoUpload");
-        const photoPreview = document.getElementById("photoPreview");
-        const noPhotoText = document.getElementById("noPhotoText");
-        const defaultIcon = document.getElementById("defaultIcon");
+        // Get location on page load
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(p => {
+                document.getElementById("latitude").value = p.coords.latitude;
+                document.getElementById("longitude").value = p.coords.longitude;
+                document.getElementById("locationDisplay").textContent = p.coords.latitude.toFixed(6) + ", " + p.coords.longitude.toFixed(6);
+            }, () => {
+                document.getElementById("locationDisplay").textContent = "Unable to get location";
+            });
+        }
 
-        uploadInput.onchange = () => {
-            const file = uploadInput.files[0];
-            if (file) {
+        // Preview image
+        document.getElementById("Photo").onchange = function() {
+            if (this.files[0]) {
                 const reader = new FileReader();
-                reader.onload = () => {
-                    photoPreview.innerHTML = `<img src="${reader.result}" style="height:100%; width:auto;">`;
+                reader.onload = e => {
+                    document.getElementById("photoPreview").innerHTML = `<img src="${e.target.result}" style="height:100%; width:auto;">`;
                 };
-                reader.readAsDataURL(file);
+                reader.readAsDataURL(this.files[0]);
+                document.getElementById("fileName").textContent = "✓ " + this.files[0].name;
             }
         };
     </script>
