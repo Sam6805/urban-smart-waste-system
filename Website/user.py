@@ -109,12 +109,29 @@ def user_profile():
     if 'user_id' not in session:
         return redirect(url_for('auth.user_login'))
     
+    conn = get_db_connection()
+    cur = conn.cursor(dictionary=True)
+    
+    cur.execute("SELECT COUNT(*) as total FROM report WHERE userId = %s", (session.get('user_id'),))
+    total_reports = cur.fetchone()['total']
+    
+    cur.execute("SELECT COUNT(*) as pending FROM report WHERE userId = %s AND status = 'Pending'", (session.get('user_id'),))
+    pending_reports = cur.fetchone()['pending']
+    
+    cur.execute("SELECT COUNT(*) as completed FROM report WHERE userId = %s AND status = 'Completed'", (session.get('user_id'),))
+    completed_reports = cur.fetchone()['completed']
+    
+    cur.close()
+    conn.close()
 
     return render_template(
         'user-profile.html',
         user_name = session.get('user_name'),
         phone_no = session.get('user_phone'),
         user_email = session.get('user_email'),
-        user_address = session.get('user_address')
+        user_address = session.get('user_address'),
+        total_reports = total_reports,
+        pending_reports = pending_reports,
+        completed_reports = completed_reports
         )
 

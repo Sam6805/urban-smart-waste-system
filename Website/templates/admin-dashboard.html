@@ -179,7 +179,7 @@
                     <tr>
                         <td  style="text-align: center; color: #888; padding: 40px;">
                             <img 
-        src="{{ url_for('static', filename=rep.photoUrl.lstrip('/')) }}"
+        src="{{ url_for('static', filename='upload/' + rep.photoUrl) }}"
         alt="Garbage Image"
         width="80"
         height="80"
