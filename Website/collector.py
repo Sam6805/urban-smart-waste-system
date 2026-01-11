@@ -16,3 +16,17 @@ def collector_homescreen():
         collector_name=collector_name,
         vehicle_no=vehicle_no
     )
+
+@collector_view.route('/collector_taskpage')
+def collector_taskpage():
+    if 'collector_id' not in session:
+        return redirect(url_for('auth.collector_login'))
+    
+    return render_template('collector-taskscreen.html')
+
+@collector_view.route('/collector_profile')
+def collector_profile():
+    if 'collector_id' not in session:
+        return redirect(url_for('auth.collector_login'))
+    
+    return render_template('collector-profile.html')
